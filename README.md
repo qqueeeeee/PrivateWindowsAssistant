@@ -7,12 +7,12 @@ A powerful Windows assistant with a modern desktop interface that can help you o
 
 ## Features
 
-- ** Application Launcher**: Open any installed Windows application with simple commands
-- ** Note Taking**: Save and manage notes in a persistent text file
-- ** Document Search**: Search through PDF documents using AI-powered semantic search
-- ** Natural Language Interface**: Chat naturally with the assistant
-- ** Modern Desktop UI**: Clean, native Windows interface built with tkinter
-- ** Request Tracking**: Monitor your API usage and request statistics
+- **Application Launcher**: Open any installed Windows application with simple commands
+- **Note Taking**: Save and manage notes in a persistent text file
+- **Document Search**: Search through PDF documents using AI-powered semantic search
+- **Natural Language Interface**: Chat naturally with the assistant
+- **Modern Desktop UI**: Clean, native Windows interface built with tkinter
+- **Request Tracking**: Monitor your API usage and request statistics
 
 ## Prerequisites
 
