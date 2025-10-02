@@ -19,7 +19,8 @@ A powerful Windows assistant with a modern desktop interface that can help you o
 1. **Ollama**: Make sure you have Ollama installed and running
    - Download from: https://ollama.ai/
    - Pull the required model: `ollama pull qwen3:4b`
-   - You can change this model with whatever model you want make sure to update `main.py` or `main_cli.py` and download the proper model 
+   - You can change this model with whatever model you want make sure to update `main.py` or `main_cli.py` and download the proper model
+ Note If you wish to not use Ollama you can use Groq or any others - once again; update `main.py` or `main_cli.py` and add your api key.
 
 ## Installation
 
