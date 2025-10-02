@@ -14,7 +14,6 @@ from engines.document_engine import document_tool
 from prompts import react_header
 from tracker.tracker import GroqRequestTracker
 
-# Load environment variables
 load_dotenv()
 
 class ModernWindowsAssistant:
@@ -24,33 +23,27 @@ class ModernWindowsAssistant:
         self.setup_styles()
         self.create_widgets()
         
-        # Initialize lightweight components first
         self.tracker = GroqRequestTracker()
         self.chat_history = []
         self.agent = None
         
-        # Add initial welcome message
         self.add_message("assistant", "Welcome to Windows Assistant! I'm initializing in the background. You can start typing, and I'll be ready shortly.")
         
-        # Show the UI immediately, then start heavy processing
         self.root.after(100, self.initialize_heavy_components)
         
     def setup_window(self):
         """Configure the main window"""
         self.root.title("Windows Assistant")
         self.root.geometry("1000x700")
-        self.root.minsize(800, 600)
-        
-        # Set window icon (if you have an icon file)
+        self.root.minsize(800, 600)    
+
         try:
-            self.root.iconbitmap("icon.ico")  # 
+            self.root.iconbitmap("icon.ico")   
         except:
             pass
-            
-        # Configure window background (VS Code style)
+  
         self.root.configure(bg='#1e1e1e')
-        
-        # Center the window
+    
         self.center_window()
         
     def center_window(self):
@@ -66,10 +59,8 @@ class ModernWindowsAssistant:
         """Configure modern dark theme styling"""
         self.style = ttk.Style()
         
-        # Configure modern theme
         self.style.theme_use('clam')
         
-        # Define Cursor/VS Code inspired color scheme
         self.colors = {
             'bg_primary': '#1e1e1e',      # Main background (VS Code dark)
             'bg_secondary': '#252526',    # Secondary background (VS Code sidebar)
@@ -96,7 +87,6 @@ class ModernWindowsAssistant:
             'selection': '#264f78'        # Selection color
         }
         
-        # Configure modern dark styles
         self.style.configure('Dark.TFrame',
                            background=self.colors['bg_secondary'],
                            borderwidth=0)
@@ -160,23 +150,18 @@ class ModernWindowsAssistant:
         
     def create_widgets(self):
         """Create and layout all widgets"""
-        # Main container with dark theme
         main_frame = ttk.Frame(self.root, padding="0", style='Dark.TFrame')
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-        # Configure grid weights
+
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
         main_frame.columnconfigure(1, weight=1)
         main_frame.rowconfigure(0, weight=1)
         
-        # Left sidebar
         self.create_sidebar(main_frame)
         
-        # Main chat area
         self.create_chat_area(main_frame)
         
-        # Status bar
         self.create_status_bar()
         
     def create_sidebar(self, parent):
@@ -187,15 +172,12 @@ class ModernWindowsAssistant:
                           padx=(0, 1), pady=0)
         sidebar_frame.configure(width=300)
         
-        # Title with modern styling
         title_label = ttk.Label(sidebar_frame, text="Windows Assistant", style='Title.TLabel')
         title_label.pack(anchor=tk.W, pady=(0, 15))
         
-        # Status indicator with modern design
         self.status_frame = ttk.Frame(sidebar_frame, style='DarkSidebar.TFrame')
         self.status_frame.pack(fill=tk.X, pady=(0, 15))
         
-        # Modern status indicator
         self.status_indicator = tk.Canvas(self.status_frame, width=14, height=14, 
                                         highlightthickness=0, bg=self.colors['bg_primary'])
         self.status_indicator.pack(side=tk.LEFT)
@@ -205,11 +187,9 @@ class ModernWindowsAssistant:
         self.status_label = ttk.Label(self.status_frame, text="Initializing...", style='Status.TLabel')
         self.status_label.pack(side=tk.LEFT, padx=(8, 0))
         
-        # Modern separator
         separator1 = tk.Frame(sidebar_frame, height=1, bg=self.colors['border_light'])
         separator1.pack(fill=tk.X, pady=(0, 20))
         
-        # Capabilities section with modern styling
         capabilities_label = ttk.Label(sidebar_frame, text="Capabilities", 
                                      font=('Segoe UI', 11, 'bold'),
                                      foreground=self.colors['accent'],
@@ -244,7 +224,6 @@ Chat naturally with the assistant"""
         capabilities_display.configure(state=tk.DISABLED)
         capabilities_display.pack(fill=tk.X, pady=(0, 15))
         
-        # Examples section
         examples_label = ttk.Label(sidebar_frame, text="Example Commands", 
                                  font=('Segoe UI', 11, 'bold'),
                                  foreground=self.colors['accent'],
@@ -272,11 +251,9 @@ Search cloud computing"""
         examples_display.configure(state=tk.DISABLED)
         examples_display.pack(fill=tk.X, pady=(0, 15))
         
-        # Modern separator
         separator2 = tk.Frame(sidebar_frame, height=1, bg=self.colors['border_light'])
         separator2.pack(fill=tk.X, pady=(0, 20))
         
-        # Buttons with modern styling
         button_frame = ttk.Frame(sidebar_frame, style='DarkSidebar.TFrame')
         button_frame.pack(fill=tk.X, pady=(0, 0))
         
@@ -297,13 +274,11 @@ Search cloud computing"""
         chat_frame.columnconfigure(0, weight=1)
         chat_frame.rowconfigure(0, weight=1)
         
-        # Create a custom frame for the chat display without default scrollbar
         chat_text_frame = tk.Frame(chat_frame, bg=self.colors['bg_primary'])
         chat_text_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 20))
         chat_text_frame.columnconfigure(0, weight=1)
         chat_text_frame.rowconfigure(0, weight=1)
-        
-        # Chat display area with modern Cursor-style styling (no scrollbar)
+
         self.chat_display = tk.Text(
             chat_text_frame, 
             wrap=tk.WORD, 
@@ -324,7 +299,7 @@ Search cloud computing"""
         )
         self.chat_display.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        # Create an invisible scrollbar (completely hidden)
+
         scrollbar = tk.Scrollbar(
             chat_text_frame,
             orient=tk.VERTICAL,
@@ -336,7 +311,7 @@ Search cloud computing"""
             highlightcolor=self.colors['bg_primary'],
             borderwidth=0,
             relief=tk.FLAT,
-            width=0  # Zero width - completely invisible
+            width=0  
         )
         # Don't grid the scrollbar - keep it hidden but functional
         # scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
@@ -348,7 +323,6 @@ Search cloud computing"""
         
         self.chat_display.bind("<MouseWheel>", on_mousewheel)
         
-        # Configure modern Cursor-style text tags for chat bubbles
         self.chat_display.tag_configure("user_header", 
                                       foreground=self.colors['accent_light'], 
                                       font=('Segoe UI', 10, 'normal'))
@@ -371,12 +345,10 @@ Search cloud computing"""
                                       relief=tk.FLAT, borderwidth=0,
                                       spacing1=10, spacing3=10)
         
-        # Modern input area
         input_container = ttk.Frame(chat_frame, style='Dark.TFrame')
         input_container.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 0))
         input_container.columnconfigure(0, weight=1)
         
-        # Input field with modern Cursor-style styling
         self.input_entry = tk.Text(input_container, height=3, wrap=tk.WORD, 
                                  font=('Segoe UI', 11), relief=tk.FLAT,
                                  bg=self.colors['input_bg'], 
@@ -391,16 +363,13 @@ Search cloud computing"""
                                  selectforeground=self.colors['text_primary'])
         self.input_entry.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=(0, 15))
         
-        # Bind Enter key (Ctrl+Enter for new line)
         self.input_entry.bind('<Return>', self.on_enter_key)
         self.input_entry.bind('<Control-Return>', lambda e: self.input_entry.insert(tk.INSERT, '\n'))
         
-        # Modern send button
         self.send_button = ttk.Button(input_container, text="Send", 
                                     command=self.send_message, style='Modern.TButton')
         self.send_button.grid(row=0, column=1, sticky=(tk.N, tk.S))
         
-        # Initially disable input until agent is ready
         self.input_entry.configure(state=tk.DISABLED)
         self.send_button.configure(state=tk.DISABLED)
         
@@ -410,7 +379,6 @@ Search cloud computing"""
         status_frame.grid(row=1, column=0, sticky=(tk.W, tk.E))
         status_frame.grid_propagate(False)
         
-        # Add a subtle top border
         border_frame = tk.Frame(status_frame, bg=self.colors['border'], height=1)
         border_frame.pack(fill=tk.X)
         
@@ -423,69 +391,60 @@ Search cloud computing"""
         
     def initialize_heavy_components(self):
         """Initialize heavy components after UI is shown"""
-        # Start agent initialization
         self.setup_agent()
         
-        # Start PDF indexing in background after agent is ready
         self.root.after(2000, self.start_background_pdf_indexing)
         
     def start_background_pdf_indexing(self):
         """Start PDF indexing in background after everything else is ready"""
         def index_pdfs():
             try:
-                # Update status to show PDF indexing
                 self.root.after(0, lambda: self.status_bar.configure(
                     text="Indexing documents in background...", fg=self.colors['text_muted']))
                 
-                # Import and initialize document engine
                 from engines.document_engine import get_doc_engine
                 get_doc_engine()
                 
-                # Update status when done
                 self.root.after(0, lambda: self.status_bar.configure(
                     text="Ready - All systems online", fg=self.colors['success']))
                     
             except Exception as e:
-                # Silently fail - document search will show error when used
                 self.root.after(0, lambda: self.status_bar.configure(
                     text="Ready", fg=self.colors['success']))
         
-        # Start PDF indexing in background thread
         threading.Thread(target=index_pdfs, daemon=True).start()
         
     def setup_agent(self):
         """Initialize the agent in a separate thread - optimized for speed"""
         def init_agent():
             try:
-                # Update status
                 self.root.after(0, lambda: self.status_bar.configure(
                     text="Initializing agent...", fg=self.colors['warning']))
                 
-                # Create LLM with optimized settings
+                
+                # from llama_index.llms.groq import Groq
+                # llm = Groq(model="groq/compound", api_key=os.getenv("GROQ_API_KEY"))
+
                 llm = Ollama(
                     model="qwen3:4b",
-                    request_timeout=15.0,  # Reduced timeout for faster responses
-                    context_window=4000,   # Reduced context window for speed
+                    request_timeout=15.0,  
+                    context_window=4000,  
                 )
                 
-                # Create agent with minimal overhead
                 agent = ReActAgent(
                     tools=[note_engine, app_engine, document_tool],
                     llm=llm,
                     max_iterations=1
                 )
                 
-                # Configure prompts
                 agent.update_prompts({"react_header": react_header})
                 self.agent = agent
                 
-                # Update UI on main thread
                 self.root.after(0, self.on_agent_ready)
                 
             except Exception as e:
                 self.root.after(0, lambda: self.on_agent_error(str(e)))
         
-        # Start initialization in background
         threading.Thread(target=init_agent, daemon=True).start()
         
     def on_agent_ready(self):
@@ -497,12 +456,10 @@ Search cloud computing"""
         self.status_bar.configure(text="Ready - Windows Assistant is online and ready to help!",
                                 fg=self.colors['success'])
         
-        # Enable input
         self.input_entry.configure(state=tk.NORMAL)
         self.send_button.configure(state=tk.NORMAL)
         self.input_entry.focus()
         
-        # Update the user that the agent is ready
         self.add_message("assistant", "I'm now fully initialized and ready to help! I can open applications, take notes, search documents, and answer questions. What would you like to do?")
         
     def on_agent_error(self, error):
@@ -514,11 +471,11 @@ Search cloud computing"""
         
     def on_enter_key(self, event):
         """Handle Enter key press"""
-        if event.state & 0x4:  # Ctrl is pressed
-            return  # Let Ctrl+Enter add new line
+        if event.state & 0x4: 
+            return 
         else:
             self.send_message()
-            return "break"  # Prevent default behavior
+            return "break"  
             
     def send_message(self):
         """Send user message and get agent response"""
@@ -526,26 +483,20 @@ Search cloud computing"""
         if not message:
             return
             
-        # Check if agent is ready
         if not hasattr(self, 'agent') or self.agent is None:
             self.add_message("assistant", "Please wait, I'm still initializing. Try again in a moment.")
             return
             
-        # Clear input
         self.input_entry.delete("1.0", tk.END)
         
-        # Add user message
         self.add_message("user", message)
         
-        # Disable input while processing
         self.input_entry.configure(state=tk.DISABLED)
         self.send_button.configure(state=tk.DISABLED)
         self.status_bar.configure(text="Thinking...", fg=self.colors['warning'])
         
-        # Process in background thread - optimized
         def process_message():
             try:
-                # Use existing event loop if available, create new one if not
                 try:
                     loop = asyncio.get_event_loop()
                     if loop.is_closed():
@@ -556,7 +507,6 @@ Search cloud computing"""
                 
                 response = loop.run_until_complete(self.get_agent_response(message))
                 
-                # Update UI on main thread
                 self.root.after(0, lambda: self.on_response_received(response))
                 
             except Exception as e:
@@ -567,15 +517,13 @@ Search cloud computing"""
     async def get_agent_response(self, prompt):
         """Get response from the agent - optimized"""
         try:
-            # Direct agent call for better performance
             response = await self.prompt_agent(prompt)
             
-            # Track request separately (non-blocking)
             try:
                 self.tracker.request_times.append(time.time())
                 self.tracker._save_today_file()
             except:
-                pass  # Don't let tracking errors slow down the response
+                pass 
             
             return str(response)
         except Exception as e:
@@ -585,7 +533,7 @@ Search cloud computing"""
         """Prompt the agent and return response - optimized for speed"""
         handler = self.agent.run(prompt)
         
-        # Skip streaming events for faster response
+        
         response = await handler
         return response
         
@@ -593,7 +541,7 @@ Search cloud computing"""
         """Called when agent response is received"""
         self.add_message("assistant", response)
         
-        # Re-enable input
+         
         self.input_entry.configure(state=tk.NORMAL)
         self.send_button.configure(state=tk.NORMAL)
         self.status_bar.configure(text="Ready", fg=self.colors['success'])
@@ -603,7 +551,7 @@ Search cloud computing"""
         """Called when there's an error getting response"""
         self.add_message("assistant", f"Sorry, I encountered an error: {error}")
         
-        # Re-enable input
+         
         self.input_entry.configure(state=tk.NORMAL)
         self.send_button.configure(state=tk.NORMAL)
         self.status_bar.configure(text="Error occurred", fg=self.colors['danger'])
@@ -613,29 +561,29 @@ Search cloud computing"""
         """Add a message to the chat display with modern styling"""
         self.chat_display.configure(state=tk.NORMAL)
         
-        # Add timestamp
+         
         timestamp = datetime.now().strftime("%H:%M")
         
-        # Add some spacing before message
+         
         self.chat_display.insert(tk.END, "\n")
         
         if sender == "user":
-            # User message with modern bubble styling
+             
             self.chat_display.insert(tk.END, f"You  •  {timestamp}\n", "user_header")
             self.chat_display.insert(tk.END, f"{message}\n", "user_message")
         else:
-            # Assistant message with modern bubble styling
+             
             self.chat_display.insert(tk.END, f"Assistant  •  {timestamp}\n", "assistant_header")
             self.chat_display.insert(tk.END, f"{message}\n", "assistant_message")
         
-        # Add spacing after message
+         
         self.chat_display.insert(tk.END, "\n")
         
-        # Scroll to bottom
+         
         self.chat_display.see(tk.END)
         self.chat_display.configure(state=tk.DISABLED)
         
-        # Store in history
+         
         self.chat_history.append({"sender": sender, "message": message, "timestamp": timestamp})
         
     def show_stats(self):

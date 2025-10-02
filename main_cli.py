@@ -53,7 +53,6 @@ async def main():
 
     while (prompt := input("\nEnter a prompt (q to quit): ")) != "q":
 
-        # Send a request safely
         try:
             response = await tracker.send_request(prompt_agent, prompt)
             print(str(response))
