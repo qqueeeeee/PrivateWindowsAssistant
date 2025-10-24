@@ -48,17 +48,6 @@ python main.py
 
 ---
 
-## How It Works
-User Command
-↓
-LLM (Ollama/Groq/local)
-↓
-[App Control] [PDF Search] [Note Taking]
-↓
-Desktop UI (tkinter)
-
----
-
 ## Customization
 
 - **Add PDFs:** Drop your PDF files into `data/College_PDFs/`, they’ll be indexed automatically.
